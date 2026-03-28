@@ -46,8 +46,11 @@ class GameState extends ChangeNotifier {
         .where((c) => c.unlockHint == 'とけいゲーム')
         .toList();
 
-    final katakanaUnlockThresholds = [3, 8, 15, 25, 40, 60];
-    final clockUnlockThresholds = [3, 8, 15, 25, 40, 60];
+    // かたかなゲーム: 50匹ポケモン + 2どうぶつの森 = 52キャラ
+    // とけいゲーム:   50匹ポケモン + 2どうぶつの森 = 52キャラ
+    // 3スタートで4ずつ増加（52個）
+    final katakanaUnlockThresholds = List.generate(52, (i) => 3 + i * 4);
+    final clockUnlockThresholds    = List.generate(52, (i) => 3 + i * 4);
 
     for (int i = 0; i < katakanaChars.length; i++) {
       if (i < katakanaUnlockThresholds.length &&
