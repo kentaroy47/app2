@@ -5,10 +5,5 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter_test/flutter_test.dart';
-
-void main() {
-  testWidgets('smoke test', (WidgetTester tester) async {
-    expect(true, isTrue);
-  });
-}
+// テストは省略（個人利用アプリのため）
+void main() {}
