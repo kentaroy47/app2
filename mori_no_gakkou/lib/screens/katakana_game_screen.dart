@@ -163,12 +163,11 @@ class _KatakanaGameScreenState extends State<KatakanaGameScreen>
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
+          child: Column(
+            children: [
               // ヘッダー
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(8, 8, 16, 4),
                 child: Row(
                   children: [
                     IconButton(
@@ -180,7 +179,7 @@ class _KatakanaGameScreenState extends State<KatakanaGameScreen>
                         'かたかなゲーム',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -189,7 +188,7 @@ class _KatakanaGameScreenState extends State<KatakanaGameScreen>
                     Text(
                       '${_questionCount + 1} / $_totalQuestions',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -213,11 +212,11 @@ class _KatakanaGameScreenState extends State<KatakanaGameScreen>
                     }
                     return Expanded(
                       child: Container(
-                        height: 8,
+                        height: 6,
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         decoration: BoxDecoration(
                           color: color,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(3),
                         ),
                       ),
                     );
@@ -225,108 +224,113 @@ class _KatakanaGameScreenState extends State<KatakanaGameScreen>
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 8),
 
               // 問題カード
-              ScaleTransition(
-                scale: _scaleAnim,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  padding: const EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(32),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: ScaleTransition(
+                    scale: _scaleAnim,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 16,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      const Text(
-                        'この もじの かたかなは どれ？',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFF636E72),
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'この もじの かたかなは どれ？',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF636E72),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _currentPair['hira']!,
+                            style: const TextStyle(
+                              fontSize: 88,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2D3436),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        _currentPair['hira']!,
-                        style: const TextStyle(
-                          fontSize: 100,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D3436),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 12),
 
               // 選択肢
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 1.8,
-                  children: _choices.map((choice) {
-                    Color bgColor = Colors.white;
-                    Color textColor = const Color(0xFF2D3436);
-                    if (_answered) {
-                      if (choice == _currentPair['kata']) {
-                        bgColor = const Color(0xFF00B894);
-                        textColor = Colors.white;
-                      } else if (choice == _selectedAnswer) {
-                        bgColor = const Color(0xFFD63031);
-                        textColor = Colors.white;
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  child: GridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1.6,
+                    children: _choices.map((choice) {
+                      Color bgColor = Colors.white;
+                      Color textColor = const Color(0xFF2D3436);
+                      if (_answered) {
+                        if (choice == _currentPair['kata']) {
+                          bgColor = const Color(0xFF00B894);
+                          textColor = Colors.white;
+                        } else if (choice == _selectedAnswer) {
+                          bgColor = const Color(0xFFD63031);
+                          textColor = Colors.white;
+                        }
                       }
-                    }
-                    return GestureDetector(
-                      onTap: () => _onAnswer(choice),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        decoration: BoxDecoration(
-                          color: bgColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Text(
-                            choice,
-                            style: TextStyle(
-                              fontSize: 52,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
+                      return GestureDetector(
+                        onTap: () => _onAnswer(choice),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          decoration: BoxDecoration(
+                            color: bgColor,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              choice,
+                              style: TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: textColor,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
-
-              const SizedBox(height: 32),
             ],
           ),
         ),
       ),
-    ),
-  );
+    );
   }
 }

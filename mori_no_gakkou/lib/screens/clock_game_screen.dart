@@ -137,12 +137,11 @@ class _ClockGameScreenState extends State<ClockGameScreen>
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
+          child: Column(
             children: [
               // ヘッダー
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(8, 8, 16, 4),
                 child: Row(
                   children: [
                     IconButton(
@@ -154,7 +153,7 @@ class _ClockGameScreenState extends State<ClockGameScreen>
                         'とけいゲーム',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -163,7 +162,7 @@ class _ClockGameScreenState extends State<ClockGameScreen>
                     Text(
                       '${_questionCount + 1} / $_totalQuestions',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -187,11 +186,11 @@ class _ClockGameScreenState extends State<ClockGameScreen>
                     }
                     return Expanded(
                       child: Container(
-                        height: 8,
+                        height: 6,
                         margin: const EdgeInsets.symmetric(horizontal: 2),
                         decoration: BoxDecoration(
                           color: color,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(3),
                         ),
                       ),
                     );
@@ -199,101 +198,104 @@ class _ClockGameScreenState extends State<ClockGameScreen>
                 ),
               ),
 
-              const SizedBox(height: 8),
-              Text(
-                _level == 0
-                    ? '「ちょうど」の とけい'
-                    : _level == 1
-                        ? '「ちょうど」と「はん」'
-                        : '15ふん きざみ',
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  fontSize: 14,
-                ),
-              ),
-
-              const Spacer(),
-
-              // 時計
-              ScaleTransition(
-                scale: _scaleAnim,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 48),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: _ClockFace(hour: _hour, minute: _minute),
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  _level == 0
+                      ? '「ちょうど」の とけい'
+                      : _level == 1
+                          ? '「ちょうど」と「はん」'
+                          : '15ふん きざみ',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontSize: 13,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 8),
-              const Text(
+              // 時計
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+                  child: ScaleTransition(
+                    scale: _scaleAnim,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: _ClockFace(hour: _hour, minute: _minute),
+                    ),
+                  ),
+                ),
+              ),
+
+              Text(
                 'なんじ？',
-                style: TextStyle(
-                  fontSize: 22,
+                style: const TextStyle(
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 8),
 
               // 選択肢
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: _choices.map((choice) {
-                    Color bgColor = Colors.white;
-                    Color textColor = const Color(0xFF2D3436);
-                    if (_answered) {
-                      if (choice == _timeToString(_hour, _minute)) {
-                        bgColor = const Color(0xFF00B894);
-                        textColor = Colors.white;
-                      } else if (choice == _selectedAnswer) {
-                        bgColor = const Color(0xFFD63031);
-                        textColor = Colors.white;
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  child: Column(
+                    children: _choices.map((choice) {
+                      Color bgColor = Colors.white;
+                      Color textColor = const Color(0xFF2D3436);
+                      if (_answered) {
+                        if (choice == _timeToString(_hour, _minute)) {
+                          bgColor = const Color(0xFF00B894);
+                          textColor = Colors.white;
+                        } else if (choice == _selectedAnswer) {
+                          bgColor = const Color(0xFFD63031);
+                          textColor = Colors.white;
+                        }
                       }
-                    }
-                    return GestureDetector(
-                      onTap: () => _onAnswer(choice),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        decoration: BoxDecoration(
-                          color: bgColor,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
+                      return Expanded(
+                        child: GestureDetector(
+                          onTap: () => _onAnswer(choice),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            margin: const EdgeInsets.only(bottom: 8),
+                            decoration: BoxDecoration(
+                              color: bgColor,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Text(
-                            choice,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
+                            child: Center(
+                              child: Text(
+                                choice,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
-
-              const SizedBox(height: 16),
             ],
           ),
         ),
       ),
-    ),
-  );
+    );
   }
 }
 
