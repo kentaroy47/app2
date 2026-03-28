@@ -1,6 +1,8 @@
-# mori_no_gakkou
+# もりのがっこう
 
-A new Flutter project.
+6さいのこどものための ちのうアプリ。かたかな・とけいを たのしくまなべるよ！
+
+**デモ**: https://kentaroy47.github.io/app2/
 
 ## Getting Started
 
