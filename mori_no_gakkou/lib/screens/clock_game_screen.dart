@@ -137,7 +137,8 @@ class _ClockGameScreenState extends State<ClockGameScreen>
           ),
         ),
         child: SafeArea(
-          child: Column(
+          child: SingleChildScrollView(
+            child: Column(
             children: [
               // ヘッダー
               Padding(
@@ -291,7 +292,8 @@ class _ClockGameScreenState extends State<ClockGameScreen>
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }
 

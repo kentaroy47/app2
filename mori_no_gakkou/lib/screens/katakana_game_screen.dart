@@ -163,8 +163,9 @@ class _KatakanaGameScreenState extends State<KatakanaGameScreen>
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
               // ヘッダー
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -325,6 +326,7 @@ class _KatakanaGameScreenState extends State<KatakanaGameScreen>
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }
